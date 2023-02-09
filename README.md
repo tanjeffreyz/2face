@@ -1,2 +1,2 @@
 <h1 align="center">2FACE</h1>
-Full stack two-factor authentication (2FA) webapp that uses facial recognition to authenticate users
+Full stack web application for two-factor authentication (2FA) using facial recognition
