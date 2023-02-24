@@ -1,4 +1,4 @@
-(function() {
+// (function() {
   // The width and height of the captured photo. We will set the
   // width to the value defined here, but the height will be
   // calculated based on the aspect ratio of the input stream.
@@ -85,15 +85,57 @@
       canvas.width = width;
       canvas.height = height;
       context.drawImage(video, 0, 0, width, height);
-    
+
       var data = canvas.toDataURL('image/png');
       photo.setAttribute('src', data);
+      uploadImage(data);
     } else {
       clearphoto();
     }
   }
 
+  const backend_host = 'http://localhost:8080';
+  function uploadImage(data) {
+    fetch(backend_host + '/images', {
+      method: 'POST',
+      body: data
+    })
+      .then(result => {
+        console.log('Success:', result);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  function validate() {
+    var context = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(video, 0, 0, width, height);
+
+    var data = canvas.toDataURL('image/png');
+    photo.setAttribute('src', data);
+
+    fetch(backend_host + '/validate', {
+      method: 'POST',
+      body: data
+    })
+      .then(response => response.json())
+      .then(data => {
+        result = document.getElementById('result');
+        result.innerHTML = "";
+        for (var i = 0; i < data.predictions.length; i++) {
+          console.log("Tag Name: " + data.predictions[i].tagName + " Probability: " + data.predictions[i].probability);
+          result.innerHTML += "Tag Name: " + data.predictions[i].tagName + " Probability: " + data.predictions[i].probability + "<br>";
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
-})();
+// })();
