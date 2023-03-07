@@ -66,7 +66,7 @@ public class ImageService {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<String> validate(@RequestBody String data) throws IOException {
+    public ResponseEntity<String> validate(@RequestBody String data) throws IOException { 
         String base64 = data.replace("data:image/png;base64,", "");
         byte[] decode = Base64.getDecoder().decode(base64);
         return CustomVision.validate(decode);
