@@ -1,10 +1,9 @@
-package com.example.demo.service;
+package com.example.app.service;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,18 +56,18 @@ public class ImageService {
     @PostMapping("/images")
     public ResponseEntity<Object> uploadImage(@RequestBody String data) throws IOException {
         String base64 = data.replace("data:image/png;base64,", "");
-        byte[] decode = Base64.getDecoder().decode(base64);
+        byte[] rawBytes = Base64.getDecoder().decode(base64);
         String imageName = UUID.randomUUID() + ".png";
-        saveImageToFile(decode, imageName);
-        saveToCloud(decode, imageName);
-        CustomVision.uploadImage(CustomVision.tags.get("Jeffrey"), decode);
+        saveImageToFile(rawBytes, imageName);
+        saveToCloud(rawBytes, imageName);
+        CustomVision.uploadImage(CustomVision.tags.get("Jeffrey"), rawBytes);
         return new ResponseEntity<>("Successfully uploaded image", HttpStatus.OK);
     }
 
     @PostMapping("/validate")
     public ResponseEntity<String> validate(@RequestBody String data) throws IOException { 
         String base64 = data.replace("data:image/png;base64,", "");
-        byte[] decode = Base64.getDecoder().decode(base64);
-        return CustomVision.validate(decode);
+        byte[] rawBytes = Base64.getDecoder().decode(base64);
+        return CustomVision.validate(rawBytes);
     }
 }

@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.example.app.service;
 
-import com.example.demo.dao.DatabaseRepository;
-import com.example.demo.entity.Image;
-import com.example.demo.entity.Person;
+import com.example.app.dao.DatabaseRepository;
+import com.example.app.entity.Image;
+import com.example.app.entity.Person;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +26,13 @@ public class DatabaseService {
         String name = jsonObject.getString("name");
         String email = jsonObject.getString("email");
         String base64 = jsonObject.getString("image").replace("data:image/png;base64,", "");
-        byte[] decode = Base64.getDecoder().decode(base64);
+        byte[] rawBytes = Base64.getDecoder().decode(base64);
 
         UUID uuid = UUID.randomUUID();
         String userId = uuid.toString();
 
         Person user = new Person(userId, name, email);
-        Image image = new Image(userId, decode);
+        Image image = new Image(userId, rawBytes);
 
         sqlDatabase.savePerson(user);
         sqlDatabase.saveImage(image);

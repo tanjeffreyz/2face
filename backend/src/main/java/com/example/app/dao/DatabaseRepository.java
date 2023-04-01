@@ -1,7 +1,7 @@
-package com.example.demo.dao;
+package com.example.app.dao;
 
-import com.example.demo.entity.Image;
-import com.example.demo.entity.Person;
+import com.example.app.entity.Image;
+import com.example.app.entity.Person;
 
 public interface DatabaseRepository {
 

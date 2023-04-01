@@ -1,9 +1,8 @@
-package com.example.demo.dao;
-import com.example.demo.entity.Image;
-import com.example.demo.entity.Person;
+package com.example.app.dao;
+import com.example.app.entity.Image;
+import com.example.app.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
