@@ -15,6 +15,7 @@ app = Flask(__name__, static_url_path='/', static_folder='static')
 def index():
     return app.send_static_file("index.html")
 
+# Test endpoint, ignore
 @app.route('/greeting', methods=['GET'])
 def greeting():
     response = requests.get(BACKEND_HOST + '/greeting')
@@ -27,7 +28,7 @@ def image():
 
 @app.route('/validate', methods=['POST'])
 def validate():
-    response = requests.post(BACKEND_HOST + '/validate', data = request.data)
+    response = requests.post(BACKEND_HOST + '/validate', data=request.data)
     return response.content
     
 @app.route('/form', methods=['POST'])
@@ -36,4 +37,4 @@ def form():
     return response.content
 
 if __name__ == '__main__': 
-    app.run(host="0.0.0.0", port = SERVER_PORT, debug=True)
+    app.run(host="0.0.0.0", port=SERVER_PORT, debug=True)
