@@ -1,30 +1,26 @@
-// The width and height of the captured photo. We will set the
-// width to the value defined here, but the height will be
-// calculated based on the aspect ratio of the input stream.
-
+// Dimensions of the photo to be taken
 var width = 320;    // We will scale the photo width to this
 var height = 0;     // This will be computed based on the input stream
 
-// |streaming| indicates whether or not we're currently streaming
-// video from the camera. Obviously, we start at false.
-
+// Whether we are currently streaming
 var streaming = false;
 
-// The various HTML elements we need to configure or control. These
-// will be set by the startup() function.
+// Global HTML elements
+var video;
+var canvas;
+var photo;
+var startButton;
 
-var video = null;
-var canvas = null;
-var photo = null;
-var startbutton = null;
-
-function startup() {
+function init() {
   video = document.getElementById('video');
   canvas = document.getElementById('canvas');
   photo = document.getElementById('photo');
-  startbutton = document.getElementById('startbutton');
+  startButton = document.getElementById('startbutton');
 
-  navigator.mediaDevices.getUserMedia({video: true, audio: false})
+  navigator.mediaDevices.getUserMedia({
+    video: true, 
+    audio: false
+  })
   .then(function(stream) {
     video.srcObject = stream;
     video.play();
@@ -33,37 +29,35 @@ function startup() {
     console.log("An error occurred: " + err);
   });
 
-  video.addEventListener('canplay', function(ev){
+  video.addEventListener('canplay', function() {
     if (!streaming) {
-      height = video.videoHeight / (video.videoWidth/width);
-    
-      // Firefox currently has a bug where the height can't be read from
-      // the video, so we will make assumptions if this happens.
-    
+      // Calculate appropriate height based off of desired width and given video dimensions
+      height = video.videoHeight / (video.videoWidth / width);
       if (isNaN(height)) {
-        height = width / (4/3);
+        height = width / (4 / 3);
       }
     
       video.setAttribute('width', width);
       video.setAttribute('height', height);
       canvas.setAttribute('width', width);
       canvas.setAttribute('height', height);
+
       streaming = true;
     }
   }, false);
 
-  startbutton.addEventListener('click', function(ev){
-    takepicture();
-    ev.preventDefault();
+  startButton.addEventListener('click', function(e){
+    takePicture();
+    e.preventDefault();
   }, false);
   
-  clearphoto();
+  clearCanvas();
 }
 
 // Fill the photo with an indication that none has been
 // captured.
 
-function clearphoto() {
+function clearCanvas() {
   var context = canvas.getContext('2d');
   context.fillStyle = "#AAA";
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -78,7 +72,7 @@ function clearphoto() {
 // drawing that to the screen, we can change its size and/or apply
 // other changes before drawing it.
 
-function takepicture() {
+function takePicture() {
   var context = canvas.getContext('2d');
   if (width && height) {
     canvas.width = width;
@@ -89,7 +83,7 @@ function takepicture() {
     photo.setAttribute('src', data);
     uploadImage(data);
   } else {
-    clearphoto();
+    clearCanvas();
   }
 }
 
@@ -149,7 +143,11 @@ function submitForm(event) {
 
   fetch(backend_host + '/form', {
     method: 'POST',
-    body: JSON.stringify({name : name, email : email, image : data})
+    body: JSON.stringify({
+      name: name, 
+      email: email, 
+      image: data
+    })
   })
     .then(result => {
       console.log('Success:', result);
@@ -159,6 +157,5 @@ function submitForm(event) {
     });
 }
 
-// Set up our event listener to run the startup process
-// once loading is complete.
-window.addEventListener('load', startup, false);
+// Run startup procedure on window load
+window.addEventListener('load', init, false);
