@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: backend
-          image: tanjeffreyz.azurecr.io/backend:12
+          image: tanjeffreyz.azurecr.io/backend:$(Build.BuildId)
           env:
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
@@ -58,7 +58,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: frontend
-          image: tanjeffreyz.azurecr.io/frontend:12
+          image: tanjeffreyz.azurecr.io/frontend:$(Build.BuildId)
           ports:
             - containerPort: 80
           resources:
