@@ -38,6 +38,43 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: nosql
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nosql
+  template:
+    metadata:
+      labels:
+        app: nosql
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: nosql
+          image: tanjeffreyz.azurecr.io/nosql:$(Build.BuildId)
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          ports:
+            - containerPort: 80
+              name: nosql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nosql-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: nosql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: frontend
 spec:
   replicas: 2
@@ -71,6 +108,8 @@ spec:
               value: "80"
             - name: BACKEND_HOST
               value: "http://backend-service"
+            - name: NOSQL_HOST
+              value: "http://nosql-service"
 ---
 apiVersion: v1
 kind: Service
