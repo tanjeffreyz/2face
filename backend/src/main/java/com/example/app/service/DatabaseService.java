@@ -1,5 +1,7 @@
 package com.example.app.service;
 
+import com.example.app.cosmos.User;
+import com.example.app.cosmos.UserRepository;
 import com.example.app.dao.DatabaseRepository;
 import com.example.app.entity.Image;
 import com.example.app.entity.Person;
@@ -19,6 +21,9 @@ import java.util.UUID;
 public class DatabaseService {
     @Autowired
     DatabaseRepository sqlDatabase;
+
+    @Autowired
+    UserRepository repository;
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public ResponseEntity<String> postForm(@RequestBody String data) throws JSONException {
@@ -64,5 +69,9 @@ public class DatabaseService {
         Files.write(new File("/images/" + imageName).toPath(), image);
     }
 
+    private void saveUserNoSql(String id, String name, String email) {
+        User newUser = new User(id, name, email);
+        repository.save(newUser);
+    }
 }
 
