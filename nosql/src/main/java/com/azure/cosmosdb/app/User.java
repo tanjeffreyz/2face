@@ -1,4 +1,4 @@
-package com.azure.cosmosdb.demo;
+package com.azure.cosmosdb.app;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;

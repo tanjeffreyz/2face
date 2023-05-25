@@ -1,4 +1,4 @@
-package com.azure.cosmosdb.demo;
+package com.azure.cosmosdb.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

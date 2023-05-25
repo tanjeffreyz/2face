@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmosdb.demo;
+package com.azure.cosmosdb.app;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
